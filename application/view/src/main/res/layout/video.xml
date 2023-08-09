@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="onReviewRetry"
+            type="kotlin.jvm.functions.Function0" />
+
+
+        <variable
+            name="onVideoLoadRetry"
+            type="kotlin.jvm.functions.Function0" />
+
+        <variable
+            name="reviewError"
+            type="boolean" />
+
+        <variable
+            name="videoLoadError"
+            type="boolean" />
+
+        <variable
+            name="favored"
+            type="boolean" />
+
+        <variable
+            name="vm"
+            type="test.mandri.application.view.video.VideoViewModel" />
+
+        <variable
+            name="onToggleFavored"
+            type="kotlin.jvm.functions.Function0" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@{vm.movieData.title}"
+                    app:titleTextColor="@color/white">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end">
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.MaterialComponents.Button"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{()->onToggleFavored.invoke()}"
+                            app:elevation="0dp"
+                            app:icon="@{favored?@drawable/video_favorite_on:@drawable/video_favorite_off}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:src="@drawable/video_favorite_on" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.appbar.MaterialToolbar>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                android:id="@+id/ytPlayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/appbar"
+                app:loadVideo="@{vm.selectedVideo.key}">
+
+            </com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/videoThumbRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/ytPlayer"
+                tools:listitem="@layout/video_thumb_item">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/video_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@{vm.movieData.title}"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/videoThumbRecycler"
+                tools:text="Video Title" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:text="@{vm.movieData.overview}"
+                app:layout_constraintTop_toBottomOf="@+id/video_title"
+                tools:text="asd asd asd asd asd asd asd asd asd asd asd asd " />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/reviewRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/review"
+                tools:listitem="@layout/video_review" />
+
+            <include
+                layout="@layout/error"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="@{reviewError?View.VISIBLE:View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/review"
+                app:onRetry="@{onReviewRetry}" />
+
+            <include
+                layout="@layout/error"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:visibility="@{videoLoadError?View.VISIBLE:View.GONE}"
+                app:onRetry="@{onVideoLoadRetry}"
+                app:layout_constraintTop_toBottomOf="@+id/ytPlayer" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

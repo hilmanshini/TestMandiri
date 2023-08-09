@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="test.mandri.application.view.ext.ResultBindingKt" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="empty"
+            type="boolean" />
+
+        <variable
+            name="vm"
+            type="test.mandri.application.view.genre.GenreViewModel" />
+
+        <variable
+            name="onRetry"
+            type="kotlin.jvm.functions.Function0" />
+
+        <variable
+            name="onSubmit"
+            type="kotlin.jvm.functions.Function0" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Select Genre"
+                app:titleTextColor="@color/white" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="@{ResultBindingKt.isError(vm.genreFlow)?View.GONE:View.VISIBLE}"
+            app:adapterData="@{ResultBindingKt.getData(vm.genreFlow)}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/confirm_button"
+            app:layout_constraintTop_toBottomOf="@+id/appbar" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/confirm_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Next"
+            android:onClick="@{()->onSubmit.invoke()}"
+            android:visibility="@{ResultBindingKt.isError(vm.genreFlow)?View.GONE:View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:setEnabled="@{!empty}" />
+
+        <include
+            layout="@layout/error"
+            android:visibility="@{ResultBindingKt.isError(vm.genreFlow)?View.VISIBLE:View.GONE}"
+            app:onRetry="@{onRetry}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

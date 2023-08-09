@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    app:startDestination="@id/genreFragment">
+
+    <fragment
+        android:id="@+id/genreFragment"
+        android:name="test.mandri.application.view.genre.GenreFragment"
+        android:label="GenreFragment">
+        <action
+            android:id="@+id/action_genreFragment_to_movieFragment"
+            app:destination="@id/movieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieFragment"
+        android:name="test.mandri.application.view.movie.MovieFragment"
+        android:label="MovieFragment">
+        <argument
+            android:name="genres"
+            app:argType="test.mandiri.application.domain.model.GenreModel[]" />
+        <action
+            android:id="@+id/action_movieFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="test.mandri.application.view.video.VideoFragment"
+        android:label="VideoFragment" >
+        <argument
+            android:name="movie"
+            app:argType="test.mandiri.application.domain.model.MovieModel" />
+    </fragment>
+</navigation>
