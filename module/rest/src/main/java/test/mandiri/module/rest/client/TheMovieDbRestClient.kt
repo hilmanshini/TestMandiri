@@ -11,14 +11,10 @@ import java.time.Duration
 import javax.inject.Named
 
 class TheMovieDbRestClient(
-    @Named("01a302300e7fbc9fb7f0af4e18399388")
     val apiKey: String,
-    @Named("readTimeout")
-    val readTimeout: Duration,
-    @Named("writeTimeout")
-    val writeTimeout: Duration,
-    @Named("baseUrl")
-    val baseUrl: String
+    private val readTimeout: Duration,
+    private val writeTimeout: Duration,
+    private val baseUrl: String
 ) {
 
     private inner class HeaderAuthorizationInterceptor() : Interceptor {
